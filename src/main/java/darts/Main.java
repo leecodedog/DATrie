@@ -22,11 +22,11 @@ public class Main {
         List words = new ArrayList();
         List<String> keys = new ArrayList<String>();
 
-        String filename = "/home/lee/IdeaProjects/DATrie/src/main/resources/traindata.csv";
+        String filename = "/home/lee/IdeaProjects/DATrie/src/main/resources/data.csv";
         BufferedReader reader = new BufferedReader(new InputStreamReader(
                 new FileInputStream(filename), "GB2312"));
 
-        // 构造输入数据
+        /** 构造输入数据 */
         while ((line = reader.readLine()) != null) {
             String[] sourceStrArray = line.split(",");
             String domain = sourceStrArray[0]  ;
@@ -39,7 +39,7 @@ public class Main {
 
         reader.close();
 
-        // 将字典序列按字典序排序
+        /** 将字典序列按字典序排序 */
         ComparatorDomain comparator=new ComparatorDomain();
         Collections.sort(words, comparator);
         Collections.sort(keys);
@@ -52,7 +52,7 @@ public class Main {
 
         System.out.println("构建字典树运行时间： "+(endTime-startTime)+"ms");
 
-        //测试
+        /** 测试 */
         int k;
         for (int i = 0; i < 10; i++) {
             String testdata = "m-."+keys.get(i)+"/html";

@@ -14,8 +14,6 @@ package darts;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class DoubleArrayTrie {
     private final static int UNIT_SIZE = 8; // size of int + int
@@ -58,6 +56,7 @@ public class DoubleArrayTrie {
         return allocSize = newSize;
     }
 
+    /** 以内部类构建树节点辅助生成双数组字典 */
     private int fetch(Node parent, List<Node> siblings) {
         if (error_ < 0)
             return 0;
@@ -99,6 +98,7 @@ public class DoubleArrayTrie {
         return siblings.size();
     }
 
+    /** 结点列表构建双数组字典树 */
     private int insert(List<Node> siblings) {
         if (error_ < 0)
             return 0;
@@ -174,6 +174,7 @@ public class DoubleArrayTrie {
         }
         return begin;
     }
+
 
     public DoubleArrayTrie() {
         check = null;
@@ -252,7 +253,7 @@ public class DoubleArrayTrie {
         return exactMatchSearch(key, 0, 0, 0);
     }
 
-    //匹配查询
+    /** 搜索匹配 */
     public int exactMatchSearch(String key, int pos, int len,
                                 int nodePos) {
 
@@ -306,12 +307,12 @@ public class DoubleArrayTrie {
         return  key;
     }
 
-    //最大前缀查询的泛型写法
+
     public List<Integer> commonPrefixSearch(String key)  {
         return commonPrefixSearch(key, 0, 0, 0);
     }
 
-    //最大前缀查询
+    /** 匹配包含同一前缀 */
     public List<Integer> commonPrefixSearch(String key, int pos, int len,
                                             int nodePos) {
         if (len <= 0)

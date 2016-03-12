@@ -12,9 +12,11 @@
 package darts;
 
 public class Domain {
+
     String name;
     String url;
 
+    /** 辅助按字典序比较url */
     public Domain(String url,String name){
         this.name=name;
         this.url=url;
