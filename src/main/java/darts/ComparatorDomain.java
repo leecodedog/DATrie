@@ -1,5 +1,3 @@
-package darts;
-
 /**
  * Double-Array Trie System
  *
@@ -11,6 +9,8 @@ package darts;
  * License (the "BSD").
  * </p>
  */
+
+package darts;
 
 import java.util.Comparator;
 

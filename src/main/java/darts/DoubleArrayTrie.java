@@ -1,5 +1,3 @@
-package darts;
-
 /**
  * Double-Array Trie System
  *
@@ -12,11 +10,14 @@ package darts;
  * </p>
  */
 
+package darts;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class DoubleArrayTrie {
-    private final static int BUF_SIZE = 16384;
     private final static int UNIT_SIZE = 8; // size of int + int
 
     private static class Node {
@@ -166,8 +167,6 @@ public class DoubleArrayTrie {
                 }
 
                 progress++;
-                // if (progress_func_) (*progress_func_) (progress,
-                // keySize);
             } else {
                 int h = insert(new_siblings);
                 base[begin + siblings.get(i).code] = h;
@@ -249,41 +248,66 @@ public class DoubleArrayTrie {
     }
 
 
-    public int exactMatchSearch(String key) {
+    public int exactMatchSearch(String key){
         return exactMatchSearch(key, 0, 0, 0);
     }
 
     //匹配查询
-    public int exactMatchSearch(String key, int pos, int len, int nodePos) {
-        if (len <= 0)
-            len = key.length();
+    public int exactMatchSearch(String key, int pos, int len,
+                                int nodePos) {
+
         if (nodePos <= 0)
             nodePos = 0;
 
         int result = -1;
 
-        char[] keyChars = key.toCharArray();
+        key = getHost(key);
+        String[] domain = key.split("\\.");
 
-        int b = base[nodePos];
-        int p;
+        for (int j = 0; j < domain.length ; j++) {
+            int b = base[nodePos];
+            int p;
+            String s = "";
 
-        for (int i = pos; i < len; i++) {
-            p = b + (int) (keyChars[i]) + 1;
-            if (b == check[p])
-                b = base[p];
-            else
+            for (int h = j; h < domain.length; h++) {
+                if (h<domain.length-1){
+                    s = s + domain[h]+ '.';
+                }else{
+                    s = s + domain[h];
+                }
+
+            }
+
+            char[] keyChars = s.toCharArray();
+
+            for (int i = pos; i < s.length(); i++) {
+                p = b + (int) (keyChars[i]) + 1;
+                if (b == check[p])
+                    b = base[p];
+                else
+                    break;
+            }
+
+            p = b;
+            int n = base[p];
+
+            if (b == check[p] && n < 0) {
+                result = -n - 1;
                 return result;
-        }
+            }
 
-        p = b;
-        int n = base[p];
-        if (b == check[p] && n < 0) {
-            result = -n - 1;
         }
         return result;
     }
+
+    public String getHost(String key){
+        String[] host = key.split("/");
+        key = host[0];
+        return  key;
+    }
+
     //最大前缀查询的泛型写法
-    public List<Integer> commonPrefixSearch(String key) {
+    public List<Integer> commonPrefixSearch(String key)  {
         return commonPrefixSearch(key, 0, 0, 0);
     }
 
@@ -294,6 +318,8 @@ public class DoubleArrayTrie {
             len = key.length();
         if (nodePos <= 0)
             nodePos = 0;
+
+
 
         List<Integer> result = new ArrayList<Integer>();
 
